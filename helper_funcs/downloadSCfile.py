@@ -6,7 +6,10 @@ from urllib.parse import urlencode
 from user_agent import generate_user_agent
 from dotenv import dotenv_values
 
-sc_cookie = dotenv_values()["SC_Cookie"]
+# Change directory to path of current python file
+os.chdir(os.path.realpath(os.path.dirname(__file__)))
+
+sc_cookie = dotenv_values(".env")["SC_Cookie"]
 user_agent = generate_user_agent()
 
 # [0] = Daily, [1] = 4h, [2] = 1h, [3] = 1w
@@ -52,7 +55,7 @@ def download_chart_image(page_content: requests.Response, url, tf):
     """ Downloads a .png image of a chart into the "charts" folder. """
     file_name = f"{url.split('s=')[1].split('&')[0]}_{int(time.time())}-{tf}.png"
 
-    with open(os.path.join("charts", file_name), "wb") as handle:
+    with open(os.path.join("../charts", file_name), "wb") as handle:
         handle.write(page_content.content)
     
     return file_name
