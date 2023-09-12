@@ -9,7 +9,7 @@ from dotenv import dotenv_values
 # Change directory to path of current python file
 os.chdir(os.path.realpath(os.path.dirname(__file__)))
 
-sc_cookie = dotenv_values(".env")["SC_Cookie"]
+sc_cookie = dotenv_values("../.env")["SC_Cookie"]
 user_agent = generate_user_agent()
 
 # [0] = Daily, [1] = 4h, [2] = 1h, [3] = 1w
