@@ -6,8 +6,7 @@ from urllib.parse import urlencode
 from user_agent import generate_user_agent
 from dotenv import dotenv_values
 
-config = dotenv_values(".env")
-sc_cookie = dotenv_values("../.env")["SC_Cookie"]
+sc_cookie = dotenv_values()["SC_Cookie"]
 user_agent = generate_user_agent()
 
 # [0] = Daily, [1] = 4h, [2] = 1h, [3] = 1w
