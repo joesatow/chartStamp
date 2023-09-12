@@ -9,7 +9,11 @@ from dotenv import dotenv_values
 # Change directory to path of current python file
 os.chdir(os.path.realpath(os.path.dirname(__file__)))
 
+if not os.path.exists("../charts"):
+   os.makedirs("../charts")
+
 sc_cookie = dotenv_values("../.env")["SC_Cookie"]
+#sc_cookie = "test"
 user_agent = generate_user_agent()
 
 # [0] = Daily, [1] = 4h, [2] = 1h, [3] = 1w
@@ -60,4 +64,4 @@ def download_chart_image(page_content: requests.Response, url, tf):
     
     return file_name
 
-get_chart('AAPL', '1d', '2022-07-05', '2023-02-1')
+get_chart('AAPL', '4h', '2022-07-05', '2023-02-1')
