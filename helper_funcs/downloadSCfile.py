@@ -13,13 +13,14 @@ if not os.path.exists("../charts"):
    os.makedirs("../charts")
 
 sc_cookie = dotenv_values("../.env")["SC_Cookie"]
+
 #sc_cookie = "test"
 user_agent = generate_user_agent()
 
 # [0] = Daily, [1] = 4h, [2] = 1h, [3] = 1w
-iValues = ['p07557323106', 'p07557323106', 'p23851798625', 'p07557323106']
+iValues = ['p55738127392', 'p57289512688', 'p23851798625', 'p57719994331']
 
-def get_chart(symbol, tf, startDate, endDate):
+def get_chart(symbol, tf):
     if tf == '1d':
         selector = 0
     if tf == '4h':
@@ -33,10 +34,10 @@ def get_chart(symbol, tf, startDate, endDate):
 
     # [0] = Daily, [1] = 4h, [2] = 1h, [3] = 1w
     payloadObjects = [
-        {"s": symbol, "p": "D", "st": startDate, "en": endDate, 'i': iValues[selector], 'r': millisecondsEpoch},
-        {"s": symbol, "p": "195", "st": startDate, "en": endDate, "i": iValues[selector], 'r': millisecondsEpoch},
-        {"s": symbol, "p": "60", "st": startDate, "en": endDate, "i": iValues[selector], 'r': millisecondsEpoch},
-        {"s": symbol, "p": "W", "st": startDate, "en": endDate, "i": iValues[selector], 'r': millisecondsEpoch}
+        {"s": symbol, "p": "D", 'i': iValues[selector], 'r': millisecondsEpoch},
+        {"s": symbol, "p": "195", "i": iValues[selector], 'r': millisecondsEpoch},
+        {"s": symbol, "p": "60", "i": iValues[selector], 'r': millisecondsEpoch},
+        {"s": symbol, "p": "W", "i": iValues[selector], 'r': millisecondsEpoch}
     ]
 
     encoded_payload = urlencode(
@@ -55,13 +56,15 @@ def stockCharts_request(url: str, user_agent: str) -> Response:
     })
     return response
 
+downloadPath = "../charts"
+downloadPath = "/mnt/share"
 def download_chart_image(page_content: requests.Response, url, tf):
     """ Downloads a .png image of a chart into the "charts" folder. """
     file_name = f"{url.split('s=')[1].split('&')[0]}_{int(time.time())}-{tf}.png"
 
-    with open(os.path.join("../charts", file_name), "wb") as handle:
+    with open(os.path.join(downloadPath, file_name), "wb") as handle:
         handle.write(page_content.content)
     
     return file_name
 
-get_chart('AAPL', '4h', '2022-07-05', '2023-02-1')
+#get_chart('AAPL', '1h')
