@@ -17,6 +17,7 @@ sc_cookie = dotenv_values("../.env")["SC_Cookie"]
 #sc_cookie = "test"
 user_agent = generate_user_agent()
 
+
 # [0] = Daily, [1] = 4h, [2] = 1h, [3] = 1w
 iValues = ['p55738127392', 'p57289512688', 'p23851798625', 'p57719994331']
 
