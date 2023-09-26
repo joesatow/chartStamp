@@ -1,9 +1,16 @@
+from helper_funcs.folderFunctions import runFolderChecks, makeResultFolder
 from helper_funcs.downloadSCfile import get_chart
 from helper_funcs.createImageGrid import createImage
+import time
 
-get_chart('AAPL', '1h')
-get_chart('AAPL', '4h')
-get_chart('AAPL', '1d')
-get_chart('AAPL', '1w')
+chartSaveFolder = int(time.time())
 
-#createImage()
+runFolderChecks()
+makeResultFolder(chartSaveFolder)
+
+get_chart('AAPL', '1h', chartSaveFolder)
+get_chart('AAPL', '4h', chartSaveFolder)
+get_chart('AAPL', '1d', chartSaveFolder)
+get_chart('AAPL', '1w', chartSaveFolder)
+
+createImage(chartSaveFolder)

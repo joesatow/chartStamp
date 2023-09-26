@@ -5,23 +5,18 @@ from requests import Response
 from urllib.parse import urlencode
 from user_agent import generate_user_agent
 from dotenv import dotenv_values
+from . import constants
 
-# Change directory to path of current python file
-os.chdir(os.path.realpath(os.path.dirname(__file__)))
-
-if not os.path.exists("../charts"):
-   os.makedirs("../charts")
-
-sc_cookie = dotenv_values("../.env")["SC_Cookie"]
+homePath = constants.HOME_PATH
+sc_cookie = dotenv_values(f"{homePath}/.env")["SC_Cookie"]
 
 #sc_cookie = "test"
 user_agent = generate_user_agent()
 
-
 # [0] = Daily, [1] = 4h, [2] = 1h, [3] = 1w
 iValues = ['p55738127392', 'p57289512688', 'p23851798625', 'p57719994331']
 
-def get_chart(symbol, tf):
+def get_chart(symbol, tf, folder):
     if tf == '1d':
         selector = 0
     if tf == '4h':
@@ -47,7 +42,7 @@ def get_chart(symbol, tf):
     
     url = f"https://stockcharts.com/c-sc/sc?{encoded_payload}"
     response = stockCharts_request(url, user_agent)
-    fileName = download_chart_image(response, url, tf)
+    fileName = download_chart_image(response, url, tf, folder)
     return fileName
 
 def stockCharts_request(url: str, user_agent: str) -> Response:
@@ -57,11 +52,10 @@ def stockCharts_request(url: str, user_agent: str) -> Response:
     })
     return response
 
-downloadPath = "../charts"
-downloadPath = "/mnt/share"
-def download_chart_image(page_content: requests.Response, url, tf):
+def download_chart_image(page_content: requests.Response, url, tf, folder):
     """ Downloads a .png image of a chart into the "charts" folder. """
-    file_name = f"{url.split('s=')[1].split('&')[0]}_{int(time.time())}-{tf}.png"
+    file_name = f"{url.split('s=')[1].split('&')[0]}-{tf}.png"
+    downloadPath = f"{homePath}/images/{folder}"
 
     with open(os.path.join(downloadPath, file_name), "wb") as handle:
         handle.write(page_content.content)
