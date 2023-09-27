@@ -61,5 +61,3 @@ def download_chart_image(page_content: requests.Response, url, tf, folder):
         handle.write(page_content.content)
     
     return file_name
-
-#get_chart('AAPL', '1h')
