@@ -5,13 +5,14 @@ import os
 homePath = constants.HOME_PATH
 
 def createImage(chartSaveFolder):
-    rearrangedList = rearrangeFileList(os.listdir(f"{homePath}/images/{chartSaveFolder}"))
+    fileList = absoluteFilePaths(f"{homePath}/images/{chartSaveFolder}")
+    rearrangedList = rearrangeFileList(fileList) 
     
-    img_01 = rearrangedList[0]
-    img_02 = rearrangedList[1]
-    img_03 = rearrangedList[2]
-    img_04 = rearrangedList[3]
- 
+    img_01 = Image.open(rearrangedList[0])
+    img_02 = Image.open(rearrangedList[1])
+    img_03 = Image.open(rearrangedList[2])
+    img_04 = Image.open(rearrangedList[3])
+
     img_01_size = img_01.size
 
     pad = 2
@@ -22,7 +23,7 @@ def createImage(chartSaveFolder):
     new_im.paste(img_03, (0,img_01_size[1]+pad))
     new_im.paste(img_04, (img_01_size[0]+pad,img_01_size[1]+pad))
     
-    new_im.save(f"{homePath}/images/results/grid-{chartSaveFolder}.jpg", "JPG")
+    new_im.save(f"{homePath}/images/results/grid-{chartSaveFolder}.png", "PNG")
 
 def rearrangeFileList(fileList):
     newList = [None] * 4
@@ -36,3 +37,10 @@ def rearrangeFileList(fileList):
         if "1h" in filename:
             newList[3] = filename
     return newList
+
+def absoluteFilePaths(directory):
+    files = []
+    for dirpath,_,filenames in os.walk(directory):
+        for f in filenames:
+            files.append(os.path.abspath(os.path.join(dirpath, f)))
+    return files
