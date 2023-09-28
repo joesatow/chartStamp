@@ -1,31 +1,28 @@
-from torchvision.io import read_image
-from torchvision.utils import make_grid, save_image
-from torchvision.transforms import transforms
-from torchvision import torch
+from PIL import Image
 from . import constants
+import os
 
 homePath = constants.HOME_PATH
 
-import os
-
 def createImage(chartSaveFolder):
-    tensors = []
-
-    transform = transforms.Compose([
-        transforms.ConvertImageDtype(dtype=torch.float),
-    ])
-    
     rearrangedList = rearrangeFileList(os.listdir(f"{homePath}/images/{chartSaveFolder}"))
+    
+    img_01 = rearrangedList[0]
+    img_02 = rearrangedList[1]
+    img_03 = rearrangedList[2]
+    img_04 = rearrangedList[3]
+ 
+    img_01_size = img_01.size
 
-    for file in rearrangedList:
-        if file.endswith(".png"):
-            image = os.path.join(f"{homePath}/images/{chartSaveFolder}", file)
-            transformed_tensor = transform(read_image(image))
-            tensors.append(transformed_tensor)
-
-    grid = make_grid(tensors, nrow=2, padding=1)
-
-    save_image(grid, f"{homePath}/images/results/grid-{chartSaveFolder}.jpg")
+    pad = 2
+    new_im = Image.new('RGB', (2*img_01_size[0]+pad,2*img_01_size[1]+pad), (0,0,0))
+    
+    new_im.paste(img_01, (0,0))
+    new_im.paste(img_02, (img_01_size[0]+pad,0))
+    new_im.paste(img_03, (0,img_01_size[1]+pad))
+    new_im.paste(img_04, (img_01_size[0]+pad,img_01_size[1]+pad))
+    
+    new_im.save(f"{homePath}/images/results/grid-{chartSaveFolder}.jpg", "JPG")
 
 def rearrangeFileList(fileList):
     newList = [None] * 4
