@@ -15,7 +15,7 @@ def createImage(chartSaveFolder):
 
     img_01_size = img_01.size
 
-    pad = 2
+    pad = 1 # Thickness of divider line
     new_im = Image.new('RGB', (2*img_01_size[0]+pad,2*img_01_size[1]+pad), (0,0,0))
     
     new_im.paste(img_01, (0,0))
