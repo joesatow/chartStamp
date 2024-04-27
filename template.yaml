@@ -47,7 +47,7 @@ Resources:
   ChartStampFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: chartStamp/package/
+      CodeUri: package/
       Handler: app.lambda_handler
       Role: !GetAtt ChartStampFunctionRole.Arn
       Runtime: python3.10
