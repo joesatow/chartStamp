@@ -7,7 +7,7 @@ def lambda_handler(event, context):
     email_body = event_body['email_body']
 
     ticker = email_body.split(" ")[8] # ticker is the 9th word in the string
-
+    
     data_1h = get_chart(ticker, '1h')
     data_4h = get_chart(ticker, '4h')
     data_1d = get_chart(ticker, '1d')
@@ -24,7 +24,7 @@ def lambda_handler(event, context):
     return {
         "statusCode": 200,
         "body": json.dumps({
-            "message": "hello chartstamp",
+            "message": "hello chartstamp"
         }),
     }
 
