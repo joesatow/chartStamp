@@ -13,7 +13,7 @@ def lambda_handler(event, context):
     data_1d = get_chart(ticker, '1d')
     data_1w = get_chart(ticker, '1w')
 
-    createImage(
+    info = createImage(
         data_1h,
         data_4h,
         data_1d,
@@ -21,10 +21,15 @@ def lambda_handler(event, context):
         ticker
     )
 
+    presigned_image_download_url = info['presigned_image_download_url']
+    object_name = info['object_name']
+
     return {
         "statusCode": 200,
         "body": json.dumps({
-            "message": "hello chartstamp"
+            "message": "hello chartstamp",
+            "url": presigned_image_download_url,
+            "object_name": object_name
         }),
     }
 

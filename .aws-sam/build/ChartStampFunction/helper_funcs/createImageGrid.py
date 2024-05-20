@@ -1,15 +1,15 @@
 from PIL import Image
-from aws_jserver import upload_object_to_s3
+from aws_jserver import upload_object_to_s3, generate_presigned_url
 import io
 from datetime import datetime
 
 bucket_name = "chart-stamp"
 
 def createImage(chart_1h, chart_4h, chart_1d, chart_1w, ticker):
-    img_01 = Image.open(io.BytesIO(chart_1h))
-    img_02 = Image.open(io.BytesIO(chart_4h))
-    img_03 = Image.open(io.BytesIO(chart_1d))
-    img_04 = Image.open(io.BytesIO(chart_1w))
+    img_01 = Image.open(io.BytesIO(chart_1w))
+    img_02 = Image.open(io.BytesIO(chart_1d))
+    img_03 = Image.open(io.BytesIO(chart_4h))
+    img_04 = Image.open(io.BytesIO(chart_1h))
 
     img_01_size = img_01.size
 
@@ -29,3 +29,9 @@ def createImage(chart_1h, chart_4h, chart_1d, chart_1w, ticker):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     object_name = f"{ticker}_{timestamp}.png"
     upload_object_to_s3(img_byte_arr, bucket_name, object_name)
+    info = {
+        "presigned_image_download_url": generate_presigned_url(bucket_name, object_name),
+        "object_name": object_name
+    }
+    return info
+    
